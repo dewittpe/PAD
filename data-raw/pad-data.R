@@ -1,7 +1,16 @@
-library(cms.hcpcs)
-library(cms.psps)
+if(!require(cms.hcpcs)) {
+  devtools::install_github("dewittpe/cms.hcpcs")
+  library(cms.hcpcs)
+}
+
+if (!require(cms.psps)) {
+  devtools::install_github("dewittpe/cms.psps") 
+  library(cms.psps)
+  psps_download()
+  psps_unzip()
+}
+
 library(data.table)
-HCPCS_2019 <- as.data.table(HCPCS_2019)
 HCPCS_2019_Q4 <- as.data.table(HCPCS_2019_Q4)
 
 # PAD_CODES as defined in the manuscript
@@ -13,13 +22,6 @@ PAD_CODES <-
 PAD_CODES <- HCPCS_2019_Q4[HCPCS %in% PAD_CODES]
 
 # PSPS data from 2011 and beyond
-
-check <- psps_md5sum()
-if (!all(check$check)) {
-  psps_download()
-  psps_unzip()
-}
-
 psps_import_2011()
 psps_import_2012()
 psps_import_2013()
