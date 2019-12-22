@@ -18,11 +18,17 @@ ui <-
 
 server <-
   function(input, output) {
+
+    reactiveData <- reactive({
+      PAD_DATA[,
+               .(Total = sum(PSPS_SUBMITTED_SERVICE_CNT),
+                 TP100KPY = sum(SERVICE_PER_100KPY)),
+                             by = YEAR]
+    })
+
+
     output$plot1 <- renderPlotly(
-                                 plot_ly(PAD_DATA[,
-                                                  .(Total = sum(PSPS_SUBMITTED_SERVICE_CNT),
-                                                    TP100KPY = sum(SERVICE_PER_100KPY)),
-                                                  by = YEAR],
+                                 plot_ly(reactiveData(),
                                          x = ~ YEAR) %>%
                                  add_trace(y = ~ Total, name = "Total Submitted Services", type = "scatter", mode = "lines+markers") %>%
                                  add_trace(y = ~ TP100KPY, name = "Total Submitted Services per 100KPY", type = "scatter", mode = "lines+markers", yaxis = "y2") %>%
