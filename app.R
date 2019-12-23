@@ -18,8 +18,17 @@ ui <-
                                                   "Both" = 3))
                                   )
                 , dashboardBody(
-                                plotlyOutput("plot1"),
-                                plotlyOutput("plot2")
+                                fluidRow(
+                                         box(title = "Total Services", width = 6, plotlyOutput("plot1"))
+                                         ,
+                                         box(title = "Total Services per 100,000 Person Years", width = 6, plotlyOutput("plot2"))
+                                         )
+                                ,
+                                fluidRow(
+                                         box(title = "Change in Total Services", width = 6, plotlyOutput("plot3"))
+                                         ,
+                                         box(title = "Change in Services per 100,000 Person Years", width = 6, plotlyOutput("plot4"))
+                                         )
                                )
                )
 
@@ -82,6 +91,16 @@ server <-
       pad_plot %<>%  layout(yaxis = list(tickformat = ',.0%'), legend = list(orientation = "h"))
       pad_plot
                                  })
+
+    output$plot3 <- renderPlotly({
+      plotting_data <- reactiveData()
+      plot_ly(plotting_data, x = ~ YEAR, y = ~ Total) %>% add_trace(type = "scatter", mode = "lines")
+    })
+
+    output$plot4 <- renderPlotly({
+      plotting_data <- reactiveData()
+      plot_ly(plotting_data, x = ~ YEAR, y = ~ Total) %>% add_trace(type = "scatter", mode = "markers")
+    })
   }
 
 shinyApp(ui, server)
