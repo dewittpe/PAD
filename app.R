@@ -53,38 +53,37 @@ pad_shapes <-# {{{
 ui <- #{{{
   dashboardPage(
                 dashboardHeader(title = "PAD")#h4(HTML("Trends in Endovascular<br>Peripheral Artery Disease<br>Interventions for the Medicare Population")))
-                , dashboardSidebar(
-                                   sidebarMenu(id = "sidebar",
-                                   menuItem("Overview",tabName="Overview",icon=icon("fas fa-home")),
-                                   menuItem("Data and Plots",tabName="plots",icon=icon("fas fa-chart-line")),
-                                   conditionalPanel(condition = "input.sidebar == 'plots'",
-                                   selectInput("providers", "Providers",
-                                                c("All Providers" = 1,
-                                                  "By Provider Group" = 2)),
-                                   conditionalPanel(
-                                                    condition = "input.providers == 2",
-                                                    checkboxGroupInput("provider_grp", "Provider Group",
-                                                                       choices = PROVIDER_GRP_LVLS[-1],
-                                                                       selected = PROVIDER_GRP_LVLS[-1]))
-
-                                  )))
-                , dashboardBody(
-                                tabItems(
-                                         tabItem(tabName = "Overview", h1("Hello World")),
+                , dashboardSidebar(# {{{
+                   sidebarMenu(
+                       id = "sidebar"
+                     , menuItem("Overview",       tabName = "Overview", icon = icon("fas fa-home"))
+                     , menuItem("Data and Plots", tabName = "plots",    icon = icon("fas fa-chart-line"))
+                     , conditionalPanel(
+                          condition = "input.sidebar == 'plots'"
+                        , selectInput("providers", "Providers", c("All Providers" = 1, "By Provider Group" = 2))
+                        , conditionalPanel(
+                            condition = "input.providers == 2"
+                            , checkboxGroupInput("provider_grp", "Provider Group", choices = PROVIDER_GRP_LVLS[-1], selected = PROVIDER_GRP_LVLS[-1]))
+                       )
+                     )
+                ) # }}}
+                , dashboardBody(# {{{
+                                tabItems(tabItem(tabName = "Overview", h1("Hello World")),
                                 tabItem(tabName = "plots",
-                                fluidRow(
-                                         box(title = "Total Services", width = 6, plotlyOutput("plot1"))
-                                         ,
-                                         box(title = "Total Services per 100,000 Person Years", width = 6, plotlyOutput("plot3"))
-                                         )
-                                ,
-                                fluidRow(
-                                         box(title = "Percent Change in Total Services", width = 6, plotlyOutput("plot2"))
-                                         ,
-                                         box(title = "Percent Change in Services per 100,000 Person Years", width = 6, plotlyOutput("plot4"))
-                                         )
-                               )
-                                ))
+                                  fluidRow(
+                                           box(title = "Total Services", width = 6, plotlyOutput("plot1"))
+                                           ,
+                                           box(title = "Total Services per 100,000 Person Years", width = 6, plotlyOutput("plot3"))
+                                           )
+                                  ,
+                                  fluidRow(
+                                           box(title = "Percent Change in Total Services", width = 6, plotlyOutput("plot2"))
+                                           ,
+                                           box(title = "Percent Change in Services per 100,000 Person Years", width = 6, plotlyOutput("plot4"))
+                                           )
+                                 ) # end of tabName = "plots" 
+                                )
+                )# }}}
                )
 #}}}
 
