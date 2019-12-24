@@ -6,15 +6,63 @@ library(data.table)
 load("data/PAD_DATA.rda")
 
 PAD_DATA[, SERVICE_PER_100KPY := PSPS_SUBMITTED_SERVICE_CNT / ENROLLMENT * 1e6]
+PROVIDER_GRP_LVLS <- c("All Providers", "Cardiology", "Surgery", "Radiology", "Other")
+
+prvd_grp_levels <-# {{{
+  c("All Providers",
+    "Surgery",
+    "Cardiology",
+    "Radiology",
+    "Other",
+    "Femoral/Popliteal",
+    "Iliac",
+    "Tibial/Peroneal",
+    "Inpatient Hospital",
+    "Outpatient Hospital",
+    "Office"
+  )# }}}
+
+pad_colors <-# {{{
+  c("Surgery"             = "#e31a1c", #"#e41a1c",
+    "Cardiology"          = "#1f78b4", #"#377eb8",
+    "Radiology"           = "#33a02c", #"#4daf4a",
+    "Other"               = "#6a3d9a", #"#984ea3",
+    "All Providers"       = "#ffff99", #"#ff7f00",
+    "Femoral/Popliteal"   = "#cab2d6",
+    "Iliac"               = "#a6cee3",
+    "Tibial/Peroneal"     = "#b2df8a",
+    "Inpatient Hospital"  = "#fdbf6f",
+    "Outpatient Hospital" = "#fb9a99",
+    "Office"              = "#ff7f00"
+  )# }}}
+
+pad_shapes <-# {{{
+  c("All Providers"       = 1,
+    "Surgery"             = 2,
+    "Cardiology"          = 3,
+    "Radiology"           = 4,
+    "Other"               = 5,
+    "Femoral/Popliteal"   = 6,
+    "Iliac"               = 7,
+    "Tibial/Peroneal"     = 8,
+    "Inpatient Hospital"  = 9,
+    "Outpatient Hospital" = 10,
+    "Office"              = 12
+  )# }}}
 
 ui <- #{{{
   dashboardPage(
                 dashboardHeader(title = "PAD")#h4(HTML("Trends in Endovascular<br>Peripheral Artery Disease<br>Interventions for the Medicare Population")))
                 , dashboardSidebar(
-                                   radioButtons("yaxes", "Y-Axis",
-                                                c("Total Submitted Services Only" = 1,
-                                                  "Submitted Services per 100KPY Only" = 2,
-                                                  "Both" = 3))
+                                   selectInput("providers", "Providers",
+                                                c("All Providers" = 1,
+                                                  "By Provider Group" = 2)),
+                                   conditionalPanel(
+                                                    condition = "input.providers == 2",
+                                                    checkboxGroupInput("provider_grp", "Provider Group",
+                                                                       choices = PROVIDER_GRP_LVLS[-1],
+                                                                       selected = PROVIDER_GRP_LVLS[-1]))
+
                                   )
                 , dashboardBody(
                                 fluidRow(
@@ -36,27 +84,49 @@ server <-
   function(input, output) {
 
     reactiveData <- reactive({# {{{
-      totals <- PAD_DATA[, .(Total = sum(PSPS_SUBMITTED_SERVICE_CNT), TP100KPY = sum(SERVICE_PER_100KPY)), by = YEAR]
 
-      totals <- totals[order(YEAR)]
-      totals[, `:=`(
-                    Total_PCPY      = (Total / shift(Total) -1),
-                    Total_PC2011    = (Total / Total[.I == 1] - 1),
-                    TP100KPY_PCPY   = (TP100KPY / shift(TP100KPY) -1),
-                    TP100KPY_PC2011 = (TP100KPY / TP100KPY[.I == 1] - 1)
-                   )]
+      BY <- c("YEAR")
+
+      if (input$providers == 2) {
+        BY <- c(BY, "PROVIDER_GRP")
+      }
+
+      totals <- PAD_DATA[, .(Total = sum(PSPS_SUBMITTED_SERVICE_CNT), TP100KPY = sum(SERVICE_PER_100KPY)), by = BY]
+
+      setorderv(totals, rev(BY))
+
+      totals[,
+             `:=`(
+                  Total_PCPY      = (Total / shift(Total) -1),
+                  Total_PC2011    = (Total / Total[.I == min(.I)] - 1),
+                  TP100KPY_PCPY   = (TP100KPY / shift(TP100KPY) -1),
+                  TP100KPY_PC2011 = (TP100KPY / TP100KPY[.I == min(.I)] - 1)
+                  ),
+             by = c(BY[-1])]
+      totals
+
+      if (input$providers == 1) {
+        totals[, PROVIDER_GRP := "All Providers"]
+      } else {
+        totals <- subset(totals, subset = PROVIDER_GRP %in% input$provider_grp)
+      }
+
+      totals$PROVIDER_GRP %<>% factor(., levels = PROVIDER_GRP_LVLS)
+
       totals
 
     })# }}}
 
     output$plot1 <- renderPlotly({# {{{
       plotting_data <- reactiveData()
-      pad_plot <- plot_ly(plotting_data, x = ~ YEAR)
+      pad_plot <- plot_ly(plotting_data, x = ~ YEAR) %>%
+        add_trace(y = ~ Total,
+                  color = ~ PROVIDER_GRP,
+                  type = "scatter",
+                  mode = "lines+markers"#, marker = list(color = pad_colors[names(pad_colors) %in% plotting_data$PROVIDER_GRP]), line = list(color = pad_colors[names(pad_colors) %in% plotting_data$PROVIDER_GRP])
+                  ) %>%
+        layout()#legend = list(orientation = "h"))
 
-      pad_plot %<>%
-        add_trace(y = ~ Total, name = "Total Submitted Services", type = "scatter", mode = "lines+markers")
-
-      pad_plot %<>% layout(legend = list(orientation = "h"))
       pad_plot
     })# }}}
 
