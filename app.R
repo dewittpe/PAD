@@ -68,7 +68,7 @@ ui <- #{{{
                      )
                 ) # }}}
                 , dashboardBody(# {{{
-                                tabItems(tabItem(tabName = "Overview", h1("Hello World")),
+                                tabItems(tabItem(tabName = "Overview", includeMarkdown("overview.md")),
                                 tabItem(tabName = "plots",
                                   fluidRow(
                                            box(title = "Total Services", width = 6, plotlyOutput("plot1"))
@@ -81,7 +81,7 @@ ui <- #{{{
                                            ,
                                            box(title = "Percent Change in Services per 100,000 Person Years", width = 6, plotlyOutput("plot4"))
                                            )
-                                 ) # end of tabName = "plots" 
+                                 ) # end of tabName = "plots"
                                 )
                 )# }}}
                )
@@ -117,6 +117,7 @@ server <-
       } else {
         totals <- subset(totals, subset = PROVIDER_GRP %in% input$provider_grp)
       }
+      totals[, MS := Total / sum(Total), by = c(BY[BY != "PROVIDER_GRP"])]
 
       totals$PROVIDER_GRP %<>% factor(., levels = PROVIDER_GRP_LVLS)
 
@@ -129,9 +130,10 @@ server <-
       pad_plot <- plot_ly(plotting_data, x = ~ YEAR) %>%
         add_trace(y = ~ Total,
                   color = ~ PROVIDER_GRP,
+                  text = ~ MS,
                   type = "scatter",
-                  mode = "lines+markers"
-                  #, marker = list(color = pad_colors[names(pad_colors) %in% plotting_data$PROVIDER_GRP]), line = list(color = pad_colors[names(pad_colors) %in% plotting_data$PROVIDER_GRP])
+                  mode = "lines+markers",
+                  hovertemplate = "Total: %{y}<br>Market Share: %{text: .2%}"
                   ) %>%
         layout(showlegend = TRUE)
 
@@ -143,7 +145,7 @@ server <-
       pad_plot <- plot_ly(plotting_data, x = ~ YEAR)
       pad_plot %<>% add_trace(y = ~ Total_PC2011, name = "since 2011",      type = "scatter", mode = "lines+markers")
       pad_plot %<>% add_trace(y = ~ Total_PCPY,   name = "from prior year", type = "scatter", mode = "lines+markers", line = list(dash = "dot"))
-      pad_plot %<>%  layout(yaxis = list(tickformat = ',.0%'), legend = list(orientation = "h"))
+      pad_plot %<>%  layout(yaxis = list(tickformat = ',.1%'), legend = list(orientation = "h"))
       pad_plot
                                  })# }}}
 
