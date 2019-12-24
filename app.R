@@ -7,8 +7,7 @@ load("data/PAD_DATA.rda")
 
 PAD_DATA[, SERVICE_PER_100KPY := PSPS_SUBMITTED_SERVICE_CNT / ENROLLMENT * 1e6]
 
-
-ui <-
+ui <- #{{{
   dashboardPage(
                 dashboardHeader(title = "PAD")#h4(HTML("Trends in Endovascular<br>Peripheral Artery Disease<br>Interventions for the Medicare Population")))
                 , dashboardSidebar(
@@ -21,21 +20,22 @@ ui <-
                                 fluidRow(
                                          box(title = "Total Services", width = 6, plotlyOutput("plot1"))
                                          ,
-                                         box(title = "Total Services per 100,000 Person Years", width = 6, plotlyOutput("plot2"))
+                                         box(title = "Total Services per 100,000 Person Years", width = 6, plotlyOutput("plot3"))
                                          )
                                 ,
                                 fluidRow(
-                                         box(title = "Change in Total Services", width = 6, plotlyOutput("plot3"))
+                                         box(title = "Percent Change in Total Services", width = 6, plotlyOutput("plot2"))
                                          ,
-                                         box(title = "Change in Services per 100,000 Person Years", width = 6, plotlyOutput("plot4"))
+                                         box(title = "Percent Change in Services per 100,000 Person Years", width = 6, plotlyOutput("plot4"))
                                          )
                                )
                )
+#}}}
 
 server <-
   function(input, output) {
 
-    reactiveData <- reactive({
+    reactiveData <- reactive({# {{{
       totals <- PAD_DATA[, .(Total = sum(PSPS_SUBMITTED_SERVICE_CNT), TP100KPY = sum(SERVICE_PER_100KPY)), by = YEAR]
 
       totals <- totals[order(YEAR)]
@@ -47,60 +47,40 @@ server <-
                    )]
       totals
 
-    })
+    })# }}}
 
-
-    output$plot1 <- renderPlotly({
+    output$plot1 <- renderPlotly({# {{{
       plotting_data <- reactiveData()
       pad_plot <- plot_ly(plotting_data, x = ~ YEAR)
 
-      if (input$yaxes == 1) {
-        pad_plot %<>%
-          add_trace(y = ~ Total, name = "Total Submitted Services", type = "scatter", mode = "lines+markers", line = list(dash = "dash"))
-      } else if (input$yaxes == 2) {
-        pad_plot %<>%
-          add_trace(y = ~ TP100KPY, name = "Total Submitted Services per 100KPY", type = "scatter", mode = "lines+markers")
-      } else {
-        pad_plot %<>%
-          add_trace(y = ~ Total, name = "Total Submitted Services", type = "scatter", mode = "lines+markers", line = list(dash = "dash")) %>%
-          add_trace(y = ~ TP100KPY, name = "Total Submitted Services per 100KPY", type = "scatter", mode = "lines+markers", yaxis = "y2") %>%
-          layout(yaxis2 = list(title = "Services per 100KPY", overlaying = "y", side = "right", color = "orange"))
-      }
+      pad_plot %<>%
+        add_trace(y = ~ Total, name = "Total Submitted Services", type = "scatter", mode = "lines+markers")
+
       pad_plot %<>% layout(legend = list(orientation = "h"))
       pad_plot
-    })
+    })# }}}
 
-    output$plot2 <- renderPlotly({
+    output$plot2 <- renderPlotly({# {{{
       plotting_data <- reactiveData()
-      print(plotting_data)
       pad_plot <- plot_ly(plotting_data, x = ~ YEAR)
-
-      if (input$yaxes == 1) {
-        pad_plot %<>% add_trace(y = ~ Total_PCPY, name = "Percent Change from Prior Year of Total Procedures", type = "scatter", mode = "lines+markers", line = list(dash = "dash"))
-        pad_plot %<>% add_trace(y = ~ Total_PC2011, name = "Percent Change from 2011 of Total Procedures", type = "scatter", mode = "lines+markers", line = list(dash = "dash"))
-      } else if (input$yaxes == 2) {
-        pad_plot %<>% add_trace(y = ~ TP100KPY_PCPY, name = "Percent Change from Prior Year of Procedures per 100KPY", type = "scatter", mode = "lines+markers")
-        pad_plot %<>% add_trace(y = ~ TP100KPY_PC2011, name = "Percent Change from 2011 of Procedures per 100KPY", type = "scatter", mode = "lines+markers")
-      } else {
-        pad_plot %<>% add_trace(y = ~ Total_PCPY, name = "Percent Change from Prior Year of Total Procedures", type = "scatter", mode = "lines+markers", line = list(dash = "dash"))
-        pad_plot %<>% add_trace(y = ~ Total_PC2011, name = "Percent Change from 2011 of Total Procedures", type = "scatter", mode = "lines+markers", line = list(dash = "dash"))
-        pad_plot %<>% add_trace(y = ~ TP100KPY_PCPY, name = "Percent Change from Prior Year of Procedures per 100KPY", type = "scatter", mode = "lines+markers")
-        pad_plot %<>% add_trace(y = ~ TP100KPY_PC2011, name = "Percent Change from 2011 of Procedures per 100KPY", type = "scatter", mode = "lines+markers")
-      }
-
+      pad_plot %<>% add_trace(y = ~ Total_PC2011, name = "since 2011",      type = "scatter", mode = "lines+markers")
+      pad_plot %<>% add_trace(y = ~ Total_PCPY,   name = "from prior year", type = "scatter", mode = "lines+markers", line = list(dash = "dot"))
       pad_plot %<>%  layout(yaxis = list(tickformat = ',.0%'), legend = list(orientation = "h"))
       pad_plot
-                                 })
+                                 })# }}}
 
-    output$plot3 <- renderPlotly({
+    output$plot3 <- renderPlotly({# {{{
       plotting_data <- reactiveData()
-      plot_ly(plotting_data, x = ~ YEAR, y = ~ Total) %>% add_trace(type = "scatter", mode = "lines")
-    })
+      plot_ly(plotting_data, x = ~ YEAR, y = ~ TP100KPY) %>% add_trace(type = "scatter", mode = "lines+markers")
+    })# }}}
 
-    output$plot4 <- renderPlotly({
+    output$plot4 <- renderPlotly({# {{{
       plotting_data <- reactiveData()
-      plot_ly(plotting_data, x = ~ YEAR, y = ~ Total) %>% add_trace(type = "scatter", mode = "markers")
-    })
+      plot_ly(plotting_data, x = ~ YEAR, y = ~ TP100KPY_PCPY) %>%
+        add_trace(y = ~ TP100KPY_PC2011, name = "from 2011",       type = "scatter", mode = "lines+markers") %>%
+        add_trace(y = ~ TP100KPY_PCPY,   name = "from prior year", type = "scatter", mode = "lines+markers", line = list(dash = "dot")) %>%
+        layout(yaxis = list(tickformat = ',.2%'), legend = list(orientation = "h"))
+    })# }}}
   }
 
 shinyApp(ui, server)
