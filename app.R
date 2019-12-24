@@ -54,6 +54,10 @@ ui <- #{{{
   dashboardPage(
                 dashboardHeader(title = "PAD")#h4(HTML("Trends in Endovascular<br>Peripheral Artery Disease<br>Interventions for the Medicare Population")))
                 , dashboardSidebar(
+                                   sidebarMenu(id = "sidebar",
+                                   menuItem("Overview",tabName="Overview",icon=icon("fas fa-home")),
+                                   menuItem("Data and Plots",tabName="plots",icon=icon("fas fa-chart-line")),
+                                   conditionalPanel(condition = "input.sidebar == 'plots'",
                                    selectInput("providers", "Providers",
                                                 c("All Providers" = 1,
                                                   "By Provider Group" = 2)),
@@ -63,8 +67,11 @@ ui <- #{{{
                                                                        choices = PROVIDER_GRP_LVLS[-1],
                                                                        selected = PROVIDER_GRP_LVLS[-1]))
 
-                                  )
+                                  )))
                 , dashboardBody(
+                                tabItems(
+                                         tabItem(tabName = "Overview", h1("Hello World")),
+                                tabItem(tabName = "plots",
                                 fluidRow(
                                          box(title = "Total Services", width = 6, plotlyOutput("plot1"))
                                          ,
@@ -77,6 +84,7 @@ ui <- #{{{
                                          box(title = "Percent Change in Services per 100,000 Person Years", width = 6, plotlyOutput("plot4"))
                                          )
                                )
+                                ))
                )
 #}}}
 
@@ -123,9 +131,10 @@ server <-
         add_trace(y = ~ Total,
                   color = ~ PROVIDER_GRP,
                   type = "scatter",
-                  mode = "lines+markers"#, marker = list(color = pad_colors[names(pad_colors) %in% plotting_data$PROVIDER_GRP]), line = list(color = pad_colors[names(pad_colors) %in% plotting_data$PROVIDER_GRP])
+                  mode = "lines+markers"
+                  #, marker = list(color = pad_colors[names(pad_colors) %in% plotting_data$PROVIDER_GRP]), line = list(color = pad_colors[names(pad_colors) %in% plotting_data$PROVIDER_GRP])
                   ) %>%
-        layout()#legend = list(orientation = "h"))
+        layout(showlegend = TRUE)
 
       pad_plot
     })# }}}
