@@ -169,7 +169,8 @@ server <-
                   mode = "lines+markers",
                   hovertemplate = "Total: %{y}<br>Market Share: %{text: .2%}"
                   ) %>%
-        layout(showlegend = TRUE)
+        layout(showlegend = TRUE,
+               yaxis = list(title = "Total Submitted Services"))
 
       pad_plot
     })# }}}
@@ -187,7 +188,7 @@ server <-
                   mode = "lines+markers",
                   # name = "Change form 2011",
                   hovertemplate = "Change from 2011: %{y: .2%}") %>%
-        layout(showlegend = TRUE, yaxis = list(tickformat = ',.1%'))
+        layout(showlegend = TRUE, yaxis = list(title = "% change from 2011", tickformat = ',.1%'))
       ppy <- pad_plot %>%
         add_trace(y = ~ Total_PCPY,
                   color = ~ PROVIDER_GRP,
@@ -197,7 +198,7 @@ server <-
                   mode = "lines+markers",
                   # name = "Change from prior year",
                   hovertemplate = "Change from prior year: %{y: .2%}") %>%
-        layout(showlegend = TRUE, yaxis = list(tickformat = ',.1%'))
+        layout(showlegend = TRUE, yaxis = list(title = "% change from prior year", tickformat = ',.1%'))
 
       subplot(p2011, ppy, nrows = 2, shareX = TRUE,
               titleY = TRUE, margin = 0.075)
@@ -216,16 +217,13 @@ server <-
                   mode = "lines+markers",
                   hovertemplate = "Total: %{y}<br>Market Share: %{text: .2%}"
                   ) %>%
-        layout(showlegend = TRUE)
+        layout(showlegend = TRUE,
+               yaxis = list(title = "Submitted Services per 100,000 Person Years"))
       pad_plot
     })# }}}
 
     output$plot4 <- renderPlotly({# {{{
       plotting_data <- reactiveData()
-      # plot_ly(plotting_data, x = ~ YEAR, y = ~ TP100KPY_PCPY) %>%
-      #   add_trace(y = ~ TP100KPY_PC2011, name = "from 2011",       type = "scatter", mode = "lines+markers") %>%
-      #   add_trace(y = ~ TP100KPY_PCPY,   name = "from prior year", type = "scatter", mode = "lines+markers", line = list(dash = "dot")) %>%
-      #   layout(yaxis = list(tickformat = ',.2%'), legend = list(orientation = "h"))
 
       pad_plot <- plot_ly(plotting_data, x = ~ YEAR)
 
@@ -238,7 +236,7 @@ server <-
                   mode = "lines+markers",
                   # name = "Change form 2011",
                   hovertemplate = "Change from 2011: %{y: .2%}") %>%
-        layout(showlegend = TRUE, yaxis = list(tickformat = ',.1%'))
+        layout(showlegend = TRUE, yaxis = list(title = "% change from 2011", tickformat = ',.1%'))
       ppy <- pad_plot %>%
         add_trace(y = ~ TP100KPY_PCPY,
                   color = ~ PROVIDER_GRP,
@@ -248,7 +246,7 @@ server <-
                   mode = "lines+markers",
                   # name = "Change from prior year",
                   hovertemplate = "Change from prior year: %{y: .2%}") %>%
-        layout(showlegend = TRUE, yaxis = list(tickformat = ',.1%'))
+        layout(showlegend = TRUE, yaxis = list(title = "% change from prior year", tickformat = ',.1%'))
 
       subplot(p2011, ppy, nrows = 2, shareX = TRUE,
               titleY = TRUE, margin = 0.075)
