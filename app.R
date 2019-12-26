@@ -185,7 +185,18 @@ server <-
 
     output$plot3 <- renderPlotly({# {{{
       plotting_data <- reactiveData()
-      plot_ly(plotting_data, x = ~ YEAR, y = ~ TP100KPY) %>% add_trace(type = "scatter", mode = "lines+markers")
+      pad_plot <- plot_ly(plotting_data, x = ~ YEAR) %>%
+        add_trace(y = ~ TP100KPY,
+                  color = ~ PROVIDER_GRP,
+                  symbol = ~ ANATOMIC_SEGMENT,
+                  linetype  = ~ PLACE_OF_SERVICE_GRP,
+                  text = ~ MS,
+                  type = "scatter",
+                  mode = "lines+markers",
+                  hovertemplate = "Total: %{y}<br>Market Share: %{text: .2%}"
+                  ) %>%
+        layout(showlegend = TRUE)
+      pad_plot
     })# }}}
 
     output$plot4 <- renderPlotly({# {{{
