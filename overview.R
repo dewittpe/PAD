@@ -45,9 +45,34 @@ codes <- unique(PAD_DATA[, c("HCPCS_CD", "ANATOMIC_SEGMENT", "PROCEDURE", "PLACE
 #'
 #' Current Procedural Terminology (CPT) codes for peripheral vascular
 #' interventions.
-#' echo = FALSE, results = "asis"
-knitr::kable(codes[order(ANATOMIC_SEGMENT, HCPCS_CD)])
+#'
+#+ label = "pad_code_table", echo = FALSE, results = "asis"
+knitr::kable(codes[order(ANATOMIC_SEGMENT, PROCEDURE, PLACEMENT, HCPCS_CD)])
+
 #'
 #' # Using This Application
 #'
-#' Click on the
+#' ## Basic Use
+#'
+#' Click on the "Data and Plots" tab in the side bar.  You will be presented
+#' with drop down menues for Providers, Anatomic Segment, and Place of service.
+#' By default, all interventions, by all providers, in all locations are
+#' presented.  If you want to see the total by provider group, for example,
+#' click on that option from the provider drop down menu.  You will then see
+#' checkboxes for the different provider groups.  Check, or uncheck, the
+#' checkboxes to subset the underlying data set to your liking.  (click on the
+#' legend of a plot to have a specific line/marker set plotted or omitted
+#' without modifying the underlying data.)
+#'
+#' Mousing over a data point will provide specific information such as specific
+#' y-axis value and market share.
+#'
+#' ## The Plots
+#'
+#' * Top left: reports the total number of submitted services.
+#' * Top right: total services by 100,000 person (enrollee) years (100KPY)
+#' * Bottom left: percent change in total services submitted from 2011 and from
+#' the prior year.
+#' * Bottom right: percent change in services per 100KPY from 2011 and from the
+#' prior year.
+#'

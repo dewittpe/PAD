@@ -42,32 +42,51 @@ foundation for this application, are available here:
 ## Notes
 
 Current Procedural Terminology (CPT) codes for peripheral vascular
-interventions. echo = FALSE, results = “asis”
-
-``` r
-knitr::kable(codes[order(ANATOMIC_SEGMENT, HCPCS_CD)])
-```
+interventions.
 
 | HCPCS\_CD | ANATOMIC\_SEGMENT | PROCEDURE                   | PLACEMENT       |
 | :-------- | :---------------- | :-------------------------- | :-------------- |
 | 37224     | Femoral/Popliteal | PTA                         |                 |
 | 37225     | Femoral/Popliteal | atherectomy +/- PTA         |                 |
-| 37226     | Femoral/Popliteal | stent                       |                 |
 | 37227     | Femoral/Popliteal | atherectomy w/stent +/- PTA |                 |
-| 0238T     | Iliac             | atherectomy                 | each vessel     |
-| 37220     | Iliac             | PTA                         | initial         |
-| 37221     | Iliac             | stent                       | initial         |
+| 37226     | Femoral/Popliteal | stent                       |                 |
 | 37222     | Iliac             | PTA                         | each additional |
+| 37220     | Iliac             | PTA                         | initial         |
+| 0238T     | Iliac             | atherectomy                 | each vessel     |
 | 37223     | Iliac             | stent                       | each additional |
-| 37228     | Tibial/Peroneal   | PTA                         | initial         |
-| 37229     | Tibial/Peroneal   | atherectomy +/- PTA         | initial         |
-| 37230     | Tibial/Peroneal   | stent                       | initial         |
-| 37231     | Tibial/Peroneal   | atherectomy w/stent +/- PTA | initial         |
+| 37221     | Iliac             | stent                       | initial         |
 | 37232     | Tibial/Peroneal   | PTA                         | each additional |
+| 37228     | Tibial/Peroneal   | PTA                         | initial         |
 | 37233     | Tibial/Peroneal   | atherectomy +/- PTA         | each additional |
-| 37234     | Tibial/Peroneal   | stent                       | each additional |
+| 37229     | Tibial/Peroneal   | atherectomy +/- PTA         | initial         |
 | 37235     | Tibial/Peroneal   | atherectomy w/stent +/- PTA | each additional |
+| 37231     | Tibial/Peroneal   | atherectomy w/stent +/- PTA | initial         |
+| 37234     | Tibial/Peroneal   | stent                       | each additional |
+| 37230     | Tibial/Peroneal   | stent                       | initial         |
 
 # Using This Application
 
-Click on the
+## Basic Use
+
+Click on the “Data and Plots” tab in the side bar. You will be presented
+with drop down menues for Providers, Anatomic Segment, and Place of
+service. By default, all interventions, by all providers, in all
+locations are presented. If you want to see the total by provider group,
+for example, click on that option from the provider drop down menu. You
+will then see checkboxes for the different provider groups. Check, or
+uncheck, the checkboxes to subset the underlying data set to your
+liking. (click on the legend of a plot to have a specific line/marker
+set plotted or omitted without modifying the underlying data.)
+
+Mousing over a data point will provide specific information such as
+specific y-axis value and market share.
+
+## The Plots
+
+  - Top left: reports the total number of submitted services.
+  - Top right: total services by 100,000 person (enrollee) years
+    (100KPY)
+  - Bottom left: percent change in total services submitted from 2011
+    and from the prior year.
+  - Bottom right: percent change in services per 100KPY from 2011 and
+    from the prior year.
