@@ -3,6 +3,7 @@ library(shinydashboard)
 library(plotly)
 library(magrittr)
 library(data.table)
+library(rmarkdown)
 load("data/PAD_DATA.rda")
 
 PAD_DATA[, SERVICE_PER_100KPY := PSPS_SUBMITTED_SERVICE_CNT / ENROLLMENT * 1e6]
