@@ -177,10 +177,31 @@ server <-
     output$plot2 <- renderPlotly({# {{{
       plotting_data <- reactiveData()
       pad_plot <- plot_ly(plotting_data, x = ~ YEAR)
-      pad_plot %<>% add_trace(y = ~ Total_PC2011, name = "since 2011",      type = "scatter", mode = "lines+markers")
-      pad_plot %<>% add_trace(y = ~ Total_PCPY,   name = "from prior year", type = "scatter", mode = "lines+markers", line = list(dash = "dot"))
-      pad_plot %<>%  layout(yaxis = list(tickformat = ',.1%'), legend = list(orientation = "h"))
-      pad_plot
+
+      p2011 <- pad_plot %>%
+        add_trace(y = ~ Total_PC2011,
+                  color = ~ PROVIDER_GRP,
+                  symbol = ~ ANATOMIC_SEGMENT,
+                  linetype = ~ PLACE_OF_SERVICE_GRP,
+                  type = "scatter",
+                  mode = "lines+markers",
+                  name = "Change form 2011",
+                  hovertemplate = "Change from 2011: %{y: .2%}") %>%
+        layout(showlegend = TRUE, yaxis = list(tickformat = ',.1%'))
+      ppy <- pad_plot %>%
+        add_trace(y = ~ Total_PCPY,
+                  color = ~ PROVIDER_GRP,
+                  symbol = ~ ANATOMIC_SEGMENT,
+                  linetype = ~ PLACE_OF_SERVICE_GRP,
+                  type = "scatter",
+                  mode = "lines+markers",
+                  name = "Change from prior year",
+                  hovertemplate = "Change from prior year: %{y: .2%}") %>%
+        layout(showlegend = TRUE, yaxis = list(tickformat = ',.1%'))
+
+      subplot(p2011, ppy, nrows = 2, shareX = TRUE,
+              titleY = TRUE, margin = 0.075)
+
                                  })# }}}
 
     output$plot3 <- renderPlotly({# {{{
