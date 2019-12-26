@@ -111,6 +111,10 @@ server <-
         BY <- c(BY, "ANATOMIC_SEGMENT")
       }
 
+      if (input$place_of_service == 2) {
+        BY <- c(BY, "PLACE_OF_SERVICE_GRP")
+      }
+
       totals <- PAD_DATA[, .(Total = sum(PSPS_SUBMITTED_SERVICE_CNT), TP100KPY = sum(SERVICE_PER_100KPY)), by = BY]
 
       setorderv(totals, rev(BY))
@@ -137,10 +141,17 @@ server <-
         totals <- subset(totals, subset = ANATOMIC_SEGMENT %in% input$anatomic_segment)
       }
 
+      if (input$place_of_service == 1) {
+        totals[, PLACE_OF_SERVICE_GRP := PLACE_OF_SERVICE_GRP_LVLS[1]]
+      } else {
+        totals <- subset(totals, subset = PLACE_OF_SERVICE_GRP %in% input$place_of_service_grp)
+      }
+
       totals[, MS := Total / sum(Total), by = c(BY[BY != "PROVIDER_GRP"])]
 
       totals$PROVIDER_GRP %<>% factor(., levels = PROVIDER_GRP_LVLS)
       totals$ANATOMIC_SEGMENT %<>% factor(., levels = ANATOMIC_SEGMENT_LVLS)
+      totals$PLACE_OF_SERVICE_GRP %<>% factor(., levels = PLACE_OF_SERVICE_GRP_LVLS)
 
       totals
 
@@ -152,6 +163,7 @@ server <-
         add_trace(y = ~ Total,
                   color = ~ PROVIDER_GRP,
                   symbol = ~ ANATOMIC_SEGMENT,
+                  linetype  = ~ PLACE_OF_SERVICE_GRP,
                   text = ~ MS,
                   type = "scatter",
                   mode = "lines+markers",
