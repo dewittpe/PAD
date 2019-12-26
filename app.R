@@ -7,7 +7,7 @@ load("data/PAD_DATA.rda")
 
 PAD_DATA[, SERVICE_PER_100KPY := PSPS_SUBMITTED_SERVICE_CNT / ENROLLMENT * 1e6]
 PROVIDER_GRP_LVLS <- c("All Providers", "Cardiology", "Surgery", "Radiology", "Other")
-ANATOMIC_GRP_LVLS <- c("All Segements", "Iliac", "Femoral/Popliteal", "Tibial/Peroneal")
+ANATOMIC_SEGMENT_LVLS <- c("All Segements", "Iliac", "Femoral/Popliteal", "Tibial/Peroneal")
 
 prvd_grp_levels <-# {{{
   c("All Providers",
@@ -65,10 +65,10 @@ ui <- #{{{
                         , conditionalPanel(
                             condition = "input.providers == 2"
                             , checkboxGroupInput("provider_grp", "Provider Group", choices = PROVIDER_GRP_LVLS[-1], selected = PROVIDER_GRP_LVLS[-1]))
-                        , selectInput("anatomic", "Anatomic Section", c("All Sections" = 1, "By Anatomic Section" = 2))
+                        , selectInput("anatomic", "Anatomic Segment", c("All Sections" = 1, "By Anatomic Segment" = 2))
                         , conditionalPanel(
                             condition = "input.anatomic == 2"
-                            , checkboxGroupInput("anatomic_grp", "Anatomic Sections", choices = ANATOMIC_GRP_LVLS[-1], selected = ANATOMIC_GRP_LVLS[-1]))
+                            , checkboxGroupInput("anatomic_segment", "Anatomic Segment", choices = ANATOMIC_SEGMENT_LVLS[-1], selected = ANATOMIC_SEGMENT_LVLS[-1]))
                        ) # end of the primary conditionalPanel
                      )
                 ) # }}}
@@ -103,6 +103,10 @@ server <-
         BY <- c(BY, "PROVIDER_GRP")
       }
 
+      if (input$anatomic == 2) {
+        BY <- c(BY, "ANATOMIC_SEGMENT")
+      }
+
       totals <- PAD_DATA[, .(Total = sum(PSPS_SUBMITTED_SERVICE_CNT), TP100KPY = sum(SERVICE_PER_100KPY)), by = BY]
 
       setorderv(totals, rev(BY))
@@ -118,13 +122,21 @@ server <-
       totals
 
       if (input$providers == 1) {
-        totals[, PROVIDER_GRP := "All Providers"]
+        totals[, PROVIDER_GRP := PROVIDER_GRP_LVLS[1]]
       } else {
         totals <- subset(totals, subset = PROVIDER_GRP %in% input$provider_grp)
       }
+
+      if (input$anatomic == 1) {
+        totals[, ANATOMIC_SEGMENT := ANATOMIC_SEGMENT_LVLS[1]]
+      } else {
+        totals <- subset(totals, subset = ANATOMIC_SEGMENT %in% input$anatomic_segment)
+      }
+
       totals[, MS := Total / sum(Total), by = c(BY[BY != "PROVIDER_GRP"])]
 
       totals$PROVIDER_GRP %<>% factor(., levels = PROVIDER_GRP_LVLS)
+      totals$ANATOMIC_SEGMENT %<>% factor(., levels = ANATOMIC_SEGMENT_LVLS)
 
       totals
 
@@ -135,6 +147,7 @@ server <-
       pad_plot <- plot_ly(plotting_data, x = ~ YEAR) %>%
         add_trace(y = ~ Total,
                   color = ~ PROVIDER_GRP,
+                  symbol = ~ ANATOMIC_SEGMENT,
                   text = ~ MS,
                   type = "scatter",
                   mode = "lines+markers",
