@@ -185,7 +185,7 @@ server <-
                   linetype = ~ PLACE_OF_SERVICE_GRP,
                   type = "scatter",
                   mode = "lines+markers",
-                  name = "Change form 2011",
+                  # name = "Change form 2011",
                   hovertemplate = "Change from 2011: %{y: .2%}") %>%
         layout(showlegend = TRUE, yaxis = list(tickformat = ',.1%'))
       ppy <- pad_plot %>%
@@ -195,7 +195,7 @@ server <-
                   linetype = ~ PLACE_OF_SERVICE_GRP,
                   type = "scatter",
                   mode = "lines+markers",
-                  name = "Change from prior year",
+                  # name = "Change from prior year",
                   hovertemplate = "Change from prior year: %{y: .2%}") %>%
         layout(showlegend = TRUE, yaxis = list(tickformat = ',.1%'))
 
@@ -222,10 +222,36 @@ server <-
 
     output$plot4 <- renderPlotly({# {{{
       plotting_data <- reactiveData()
-      plot_ly(plotting_data, x = ~ YEAR, y = ~ TP100KPY_PCPY) %>%
-        add_trace(y = ~ TP100KPY_PC2011, name = "from 2011",       type = "scatter", mode = "lines+markers") %>%
-        add_trace(y = ~ TP100KPY_PCPY,   name = "from prior year", type = "scatter", mode = "lines+markers", line = list(dash = "dot")) %>%
-        layout(yaxis = list(tickformat = ',.2%'), legend = list(orientation = "h"))
+      # plot_ly(plotting_data, x = ~ YEAR, y = ~ TP100KPY_PCPY) %>%
+      #   add_trace(y = ~ TP100KPY_PC2011, name = "from 2011",       type = "scatter", mode = "lines+markers") %>%
+      #   add_trace(y = ~ TP100KPY_PCPY,   name = "from prior year", type = "scatter", mode = "lines+markers", line = list(dash = "dot")) %>%
+      #   layout(yaxis = list(tickformat = ',.2%'), legend = list(orientation = "h"))
+
+      pad_plot <- plot_ly(plotting_data, x = ~ YEAR)
+
+      p2011 <- pad_plot %>%
+        add_trace(y = ~ TP100KPY_PC2011,
+                  color = ~ PROVIDER_GRP,
+                  symbol = ~ ANATOMIC_SEGMENT,
+                  linetype = ~ PLACE_OF_SERVICE_GRP,
+                  type = "scatter",
+                  mode = "lines+markers",
+                  # name = "Change form 2011",
+                  hovertemplate = "Change from 2011: %{y: .2%}") %>%
+        layout(showlegend = TRUE, yaxis = list(tickformat = ',.1%'))
+      ppy <- pad_plot %>%
+        add_trace(y = ~ TP100KPY_PCPY,
+                  color = ~ PROVIDER_GRP,
+                  symbol = ~ ANATOMIC_SEGMENT,
+                  linetype = ~ PLACE_OF_SERVICE_GRP,
+                  type = "scatter",
+                  mode = "lines+markers",
+                  # name = "Change from prior year",
+                  hovertemplate = "Change from prior year: %{y: .2%}") %>%
+        layout(showlegend = TRUE, yaxis = list(tickformat = ',.1%'))
+
+      subplot(p2011, ppy, nrows = 2, shareX = TRUE,
+              titleY = TRUE, margin = 0.075)
     })# }}}
   }
 
