@@ -6,9 +6,9 @@ library(data.table)
 load("data/PAD_DATA.rda")
 
 PAD_DATA[, SERVICE_PER_100KPY := PSPS_SUBMITTED_SERVICE_CNT / ENROLLMENT * 1e6]
-PROVIDER_GRP_LVLS <- c("All Providers", "Cardiology", "Surgery", "Radiology", "Other")
-ANATOMIC_SEGMENT_LVLS <- c("All Segements", "Iliac", "Femoral/Popliteal", "Tibial/Peroneal")
-
+PROVIDER_GRP_LVLS         <- c("All Providers", "Cardiology", "Surgery", "Radiology", "Other")
+ANATOMIC_SEGMENT_LVLS     <- c("All Segements", "Iliac", "Femoral/Popliteal", "Tibial/Peroneal")
+PLACE_OF_SERVICE_GRP_LVLS <- c("All Locations", "Inpatient Hospital", "Outpatient Hospital", "Office", "Ambulatory Clinic", "Ambulatory Surgical Center", "Emergency Room", "Other")
 prvd_grp_levels <-# {{{
   c("All Providers",
     "Surgery",
@@ -69,6 +69,10 @@ ui <- #{{{
                         , conditionalPanel(
                             condition = "input.anatomic == 2"
                             , checkboxGroupInput("anatomic_segment", "Anatomic Segment", choices = ANATOMIC_SEGMENT_LVLS[-1], selected = ANATOMIC_SEGMENT_LVLS[-1]))
+                        , selectInput("place_of_service", "Place of Service", c("All Locations" = 1, "By Location" = 2))
+                        , conditionalPanel(
+                                           condition = "input.place_of_service == 2"
+                                           , checkboxGroupInput("place_of_service_grp", "Place of Service", choices = PLACE_OF_SERVICE_GRP_LVLS[-1], selected = PLACE_OF_SERVICE_GRP_LVLS[-1]))
                        ) # end of the primary conditionalPanel
                      )
                 ) # }}}
