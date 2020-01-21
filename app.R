@@ -6,7 +6,7 @@ library(data.table)
 library(rmarkdown)
 load("data/PAD_DATA.rda")
 
-PAD_DATA[, SERVICE_PER_100KPY := PSPS_SUBMITTED_SERVICE_CNT / ENROLLMENT * 1e6]
+PAD_DATA[, SERVICE_PER_100KPY := PSPS_SUBMITTED_SERVICE_CNT / ENROLLMENT * 1e5]
 PROVIDER_GRP_LVLS         <- c("All Providers", "Cardiology", "Surgery", "Radiology", "Other")
 ANATOMIC_SEGMENT_LVLS     <- c("All Segements", "Iliac", "Femoral/Popliteal", "Tibial/Peroneal")
 PLACE_OF_SERVICE_GRP_LVLS <- c("All Locations", "Inpatient Hospital", "Outpatient Hospital", "Office", "Ambulatory Clinic", "Ambulatory Surgical Center", "Emergency Room", "Other")
