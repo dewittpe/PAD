@@ -18,7 +18,7 @@
 #' specialty, anatomic segment, and clinical location of services.
 #'
 #' ## Methods:
-#' [Physican Supplier Procedure Summary](https://www.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Physician-Supplier-Procedure-Summary/index)
+#' [Physician Supplier Procedure Summary](https://www.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Physician-Supplier-Procedure-Summary/index)
 #' (PSPS) files where queried for peripheral vascular interventions via Current
 #' Procedural Terminology (CPT) codes.  The reported totals are submitted services
 #' for all Medicare part B enrollees.  Services per 100,000 person years (100KPY)
@@ -55,7 +55,7 @@ knitr::kable(codes[order(ANATOMIC_SEGMENT, PROCEDURE, PLACEMENT, HCPCS_CD)])
 #' ## Basic Use
 #'
 #' Click on the "Data and Plots" tab in the side bar.  You will be presented
-#' with drop down menues for Providers, Anatomic Segment, and Place of service.
+#' with drop down menus for Providers, Anatomic Segment, and Place of service.
 #' By default, all interventions, by all providers, in all locations are
 #' presented.  If you want to see the total by provider group, for example,
 #' click on that option from the provider drop down menu.  You will then see

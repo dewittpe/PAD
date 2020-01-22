@@ -8,7 +8,7 @@ load("data/PAD_DATA.rda")
 
 PAD_DATA[, SERVICE_PER_100KPY := PSPS_SUBMITTED_SERVICE_CNT / ENROLLMENT * 1e5]
 PROVIDER_GRP_LVLS         <- c("All Providers", "Cardiology", "Surgery", "Radiology", "Other")
-ANATOMIC_SEGMENT_LVLS     <- c("All Segements", "Iliac", "Femoral/Popliteal", "Tibial/Peroneal")
+ANATOMIC_SEGMENT_LVLS     <- c("All Segments", "Iliac", "Femoral/Popliteal", "Tibial/Peroneal")
 PLACE_OF_SERVICE_GRP_LVLS <- c("All Locations", "Inpatient Hospital", "Outpatient Hospital", "Office", "Ambulatory Clinic", "Ambulatory Surgical Center", "Emergency Room", "Other")
 prvd_grp_levels <-# {{{
   c("All Providers",
@@ -25,11 +25,11 @@ prvd_grp_levels <-# {{{
   )# }}}
 
 pad_colors <-# {{{
-  c("Surgery"             = "#e31a1c", #"#e41a1c",
-    "Cardiology"          = "#1f78b4", #"#377eb8",
-    "Radiology"           = "#33a02c", #"#4daf4a",
-    "Other"               = "#6a3d9a", #"#984ea3",
-    "All Providers"       = "#ffff99", #"#ff7f00",
+  c("Surgery"             = "#e31a1c",
+    "Cardiology"          = "#1f78b4",
+    "Radiology"           = "#33a02c",
+    "Other"               = "#6a3d9a",
+    "All Providers"       = "#ffff99",
     "Femoral/Popliteal"   = "#cab2d6",
     "Iliac"               = "#a6cee3",
     "Tibial/Peroneal"     = "#b2df8a",

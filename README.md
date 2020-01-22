@@ -2,7 +2,7 @@
 
 This repo is focused on providing a [shiny app](https://dewittpe.shinyapps.io/PAD-Interventions/) for
 exploring trends in endovascular peripheral artery disease interventions for the
-medicare population.
+Medicare population.
 
 This work is based on the [Physician/Supplier Procedure Summary](https://www.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Physician-Supplier-Procedure-Summary/index)
 data set made public by the Centers for Medicare & Medicaid Services.
