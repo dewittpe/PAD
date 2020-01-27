@@ -61,6 +61,7 @@ PSPS_DATA <-
 ENROLLMENT <- as.data.table(cms.program.statistics::MDCR_ENROLL_AB_01[, c("Year", "Total Enrollment")])
 setnames(ENROLLMENT, old = "Year", new = "YEAR")
 setnames(ENROLLMENT, old = "Total Enrollment", new = "ENROLLMENT")
+ENROLLMENT <- rbind(ENROLLMENT, data.table("YEAR" = 2018, "ENROLLMENT" = 59989883)) # from the Program Statistics Dash board
 
 # Place of Service
 PLACE_OF_SERVICE <- as.data.table(cms.program.statistics::PLACE_OF_SERVICE)
@@ -110,10 +111,10 @@ PAD_DATA[HCPCS_CD == "0238T" , `:=`(ANATOMIC_SEGMENT = "Iliac"             , PRO
 PAD_DATA[HCPCS_CD == "37221" , `:=`(ANATOMIC_SEGMENT = "Iliac"             , PROCEDURE = "stent"                       , PLACEMENT = "initial")]
 PAD_DATA[HCPCS_CD == "37222" , `:=`(ANATOMIC_SEGMENT = "Iliac"             , PROCEDURE = "PTA"                         , PLACEMENT = "each additional")]
 PAD_DATA[HCPCS_CD == "37223" , `:=`(ANATOMIC_SEGMENT = "Iliac"             , PROCEDURE = "stent"                       , PLACEMENT = "each additional")]
-PAD_DATA[HCPCS_CD == "37224" , `:=`(ANATOMIC_SEGMENT = "Femoral/Popliteal" , PROCEDURE = "PTA"                         , PLACEMENT = "")] 
-PAD_DATA[HCPCS_CD == "37225" , `:=`(ANATOMIC_SEGMENT = "Femoral/Popliteal" , PROCEDURE = "atherectomy +/- PTA"         , PLACEMENT = "")] 
-PAD_DATA[HCPCS_CD == "37226" , `:=`(ANATOMIC_SEGMENT = "Femoral/Popliteal" , PROCEDURE = "stent"                       , PLACEMENT = "")] 
-PAD_DATA[HCPCS_CD == "37227" , `:=`(ANATOMIC_SEGMENT = "Femoral/Popliteal" , PROCEDURE = "atherectomy w/stent +/- PTA" , PLACEMENT = "")] 
+PAD_DATA[HCPCS_CD == "37224" , `:=`(ANATOMIC_SEGMENT = "Femoral/Popliteal" , PROCEDURE = "PTA"                         , PLACEMENT = "")]
+PAD_DATA[HCPCS_CD == "37225" , `:=`(ANATOMIC_SEGMENT = "Femoral/Popliteal" , PROCEDURE = "atherectomy +/- PTA"         , PLACEMENT = "")]
+PAD_DATA[HCPCS_CD == "37226" , `:=`(ANATOMIC_SEGMENT = "Femoral/Popliteal" , PROCEDURE = "stent"                       , PLACEMENT = "")]
+PAD_DATA[HCPCS_CD == "37227" , `:=`(ANATOMIC_SEGMENT = "Femoral/Popliteal" , PROCEDURE = "atherectomy w/stent +/- PTA" , PLACEMENT = "")]
 PAD_DATA[HCPCS_CD == "37228" , `:=`(ANATOMIC_SEGMENT = "Tibial/Peroneal"   , PROCEDURE = "PTA"                         , PLACEMENT = "initial")]
 PAD_DATA[HCPCS_CD == "37229" , `:=`(ANATOMIC_SEGMENT = "Tibial/Peroneal"   , PROCEDURE = "atherectomy +/- PTA"         , PLACEMENT = "initial")]
 PAD_DATA[HCPCS_CD == "37230" , `:=`(ANATOMIC_SEGMENT = "Tibial/Peroneal"   , PROCEDURE = "stent"                       , PLACEMENT = "initial")]

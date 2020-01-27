@@ -1,0 +1,213 @@
+
+R version 3.6.2 (2019-12-12) -- "Dark and Stormy Night"
+Copyright (C) 2019 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> if(!require(cms.hcpcs)) {
++   devtools::install_github("dewittpe/cms.hcpcs")
++   library(cms.hcpcs)
++ }
+Loading required package: cms.hcpcs
+> 
+> if (!require(cms.program.statistics)) {
++   devtools::install_github("dewittpe/cms.program.statistics")
++   library(cms.program.statistics)
++ }
+Loading required package: cms.program.statistics
+> 
+> if (!require(cms.psps)) {
++   devtools::install_github("dewittpe/cms.psps")
++   library(cms.psps)
++   psps_download()
++   psps_unzip()
++ }
+Loading required package: cms.psps
+> 
+> library(magrittr)
+> library(data.table)
+> HCPCS_2019_Q4 <- as.data.table(HCPCS_2019_Q4)
+> 
+> # PAD_CODES as defined in the manuscript
+> PAD_CODES <-
++   c("37220", "0238T", "37221", "37222", "37223", "37224", "37225", "37226",
++     "37227", "37228", "37229", "37230", "37231", "37232", "37233", "37234",
++     "37235")
+> 
+> # PAD_CODES <-
+> HCPCS_2019_Q4[HCPCS %in% PAD_CODES]
+                 GROUP HCPCS
+ 1:            Surgery 37220
+ 2:            Surgery 37221
+ 3:            Surgery 37222
+ 4:            Surgery 37223
+ 5:            Surgery 37224
+ 6:            Surgery 37225
+ 7:            Surgery 37226
+ 8:            Surgery 37227
+ 9:            Surgery 37228
+10:            Surgery 37229
+11:            Surgery 37230
+12:            Surgery 37231
+13:            Surgery 37232
+14:            Surgery 37233
+15:            Surgery 37234
+16:            Surgery 37235
+17: Category III Codes 0238T
+                                                                                                                                                                                                                                                                                         DESCRIPTION
+ 1:                                                                                                                                                                   Revascularization, endovascular, open or percutaneous, iliac artery, unilateral, initial vessel; with transluminal angioplasty
+ 2:                                                                                               Revascularization, endovascular, open or percutaneous, iliac artery, unilateral, initial vessel; with transluminal stent placement(s), includes angioplasty within the same vessel, when performed
+ 3:                                                                                         Revascularization, endovascular, open or percutaneous, iliac artery, each additional ipsilateral iliac vessel; with transluminal angioplasty (List separately in addition to code for primary procedure)
+ 4:                     Revascularization, endovascular, open or percutaneous, iliac artery, each additional ipsilateral iliac vessel; with transluminal stent placement(s), includes angioplasty within the same vessel, when performed (List separately in addition to code for primary procedure)
+ 5:                                                                                                                                                                   Revascularization, endovascular, open or percutaneous, femoral, popliteal artery(s), unilateral; with transluminal angioplasty
+ 6:                                                                                                                   Revascularization, endovascular, open or percutaneous, femoral, popliteal artery(s), unilateral; with atherectomy, includes angioplasty within the same vessel, when performed
+ 7:                                                                                               Revascularization, endovascular, open or percutaneous, femoral, popliteal artery(s), unilateral; with transluminal stent placement(s), includes angioplasty within the same vessel, when performed
+ 8:                                                                               Revascularization, endovascular, open or percutaneous, femoral, popliteal artery(s), unilateral; with transluminal stent placement(s) and atherectomy, includes angioplasty within the same vessel, when performed
+ 9:                                                                                                                                                        Revascularization, endovascular, open or percutaneous, tibial, peroneal artery, unilateral, initial vessel; with transluminal angioplasty
+10:                                                                                                        Revascularization, endovascular, open or percutaneous, tibial, peroneal artery, unilateral, initial vessel; with atherectomy, includes angioplasty within the same vessel, when performed
+11:                                                                                    Revascularization, endovascular, open or percutaneous, tibial, peroneal artery, unilateral, initial vessel; with transluminal stent placement(s), includes angioplasty within the same vessel, when performed
+12:                                                                    Revascularization, endovascular, open or percutaneous, tibial, peroneal artery, unilateral, initial vessel; with transluminal stent placement(s) and atherectomy, includes angioplasty within the same vessel, when performed
+13:                                                                                     Revascularization, endovascular, open or percutaneous, tibial/peroneal artery, unilateral, each additional vessel; with transluminal angioplasty (List separately in addition to code for primary procedure)
+14:                                     Revascularization, endovascular, open or percutaneous, tibial/peroneal artery, unilateral, each additional vessel; with atherectomy, includes angioplasty within the same vessel, when performed (List separately in addition to code for primary procedure)
+15:                 Revascularization, endovascular, open or percutaneous, tibial/peroneal artery, unilateral, each additional vessel; with transluminal stent placement(s), includes angioplasty within the same vessel, when performed (List separately in addition to code for primary procedure)
+16: Revascularization, endovascular, open or percutaneous, tibial/peroneal artery, unilateral, each additional vessel; with transluminal stent placement(s) and atherectomy, includes angioplasty within the same vessel, when performed (List separately in addition to code for primary procedure)
+17:                                                                                                                                                      Transluminal peripheral atherectomy, open or percutaneous, including radiological supervision and interpretation; iliac artery, each vessel
+    YEAR QRT
+ 1: 2019   4
+ 2: 2019   4
+ 3: 2019   4
+ 4: 2019   4
+ 5: 2019   4
+ 6: 2019   4
+ 7: 2019   4
+ 8: 2019   4
+ 9: 2019   4
+10: 2019   4
+11: 2019   4
+12: 2019   4
+13: 2019   4
+14: 2019   4
+15: 2019   4
+16: 2019   4
+17: 2019   4
+> 
+> # PSPS data from 2011 and beyond
+> psps_2011 <- psps_import_2011()
+> psps_2011 %<>% .[HCPCS_CD %in% PAD_CODES]
+> 
+> psps_2012 <- psps_import_2012()
+> psps_2012 %<>% .[HCPCS_CD %in% PAD_CODES]
+> 
+> psps_2013 <- psps_import_2013()
+> psps_2013 %<>% .[HCPCS_CD %in% PAD_CODES]
+> 
+> psps_2014 <- psps_import_2014()
+> psps_2014 %<>% .[HCPCS_CD %in% PAD_CODES]
+> 
+> psps_2015 <- psps_import_2015()
+> psps_2015 %<>% .[HCPCS_CD %in% PAD_CODES]
+> 
+> psps_2016 <- psps_import_2016()
+> psps_2016 %<>% .[HCPCS_CD %in% PAD_CODES]
+> 
+> psps_2017 <- psps_import_2017()
+> psps_2017 %<>% .[HCPCS_CD %in% PAD_CODES]
+> 
+> psps_2018 <- psps_import_2018()
+> psps_2018 %<>% .[HCPCS_CD %in% PAD_CODES]
+> 
+> PSPS_DATA <-
++   rbindlist(list(psps_2011, psps_2012, psps_2013, psps_2014,
++                  psps_2015, psps_2016, psps_2017, psps_2018))
+> 
+> # Enrollment
+> ENROLLMENT <- as.data.table(cms.program.statistics::MDCR_ENROLL_AB_01[, c("Year", "Total Enrollment")])
+> setnames(ENROLLMENT, old = "Year", new = "YEAR")
+> setnames(ENROLLMENT, old = "Total Enrollment", new = "ENROLLMENT")
+> ENROLLMENT <- rbind(ENROLLMENT, data.table("YEAR" = 2018, "ENROLLMENT" = 59989883)) # from the Program Statistics Dash board
+> 
+> # Place of Service
+> PLACE_OF_SERVICE <- as.data.table(cms.program.statistics::PLACE_OF_SERVICE)
+> PLACE_OF_SERVICE[, PLACE_OF_SERVICE_GRP := "Other"]
+> PLACE_OF_SERVICE[grepl("Ambulatory Surgical Center",       `Place of Service Name`), PLACE_OF_SERVICE_GRP := "Ambulatory Surgical Center"]
+> PLACE_OF_SERVICE[grepl("Independent Clinic",               `Place of Service Name`), PLACE_OF_SERVICE_GRP := "Ambulatory Clinic"]
+> PLACE_OF_SERVICE[grepl("^(Emergency Room|Urgent Care).+$", `Place of Service Name`), PLACE_OF_SERVICE_GRP := "Emergency Room"]
+> PLACE_OF_SERVICE[grepl("^Inpatient.+$",                    `Place of Service Name`), PLACE_OF_SERVICE_GRP := "Inpatient Hospital"]
+> PLACE_OF_SERVICE[grepl("^Office$",                         `Place of Service Name`), PLACE_OF_SERVICE_GRP := "Office"]
+> PLACE_OF_SERVICE[grepl(".+Outpatient Hospital$",           `Place of Service Name`), PLACE_OF_SERVICE_GRP := "Outpatient Hospital"]
+> 
+> # Provider Taxonomy
+> PROVIDER_TAXONOMY <- as.data.table(cms.program.statistics::PROVIDER_TAXONOMY)
+> PROVIDER_TAXONOMY[, PROVIDER_GRP := "Other"]
+> PROVIDER_TAXONOMY[`MEDICARE SPECIALTY CODE` %in% c("30", "36", "94"),                   PROVIDER_GRP := "Radiology"]
+> PROVIDER_TAXONOMY[`MEDICARE SPECIALTY CODE` %in% c("06", "11", "21", "76", "C3", "C7"), PROVIDER_GRP := "Cardiology"]
+> PROVIDER_TAXONOMY[`MEDICARE SPECIALTY CODE` %in% c("02", "28", "33", "77", "78"),       PROVIDER_GRP := "Surgery"]
+> PROVIDER_TAXONOMY <- unique(PROVIDER_TAXONOMY[, c("MEDICARE SPECIALTY CODE", "PROVIDER_GRP")])
+> 
+> # PAD Data
+> PAD_DATA <-
++   PSPS_DATA %>%
++   merge(., ENROLLMENT, by = "YEAR", all.x = TRUE, all.y = FALSE) %>%
++   merge(., PLACE_OF_SERVICE, by.x = "PLACE_OF_SERVICE_CD", by.y = "Place of Service Code", all.x = TRUE, all.y = FALSE) %>%
++   merge(., PROVIDER_TAXONOMY, by.x = "PROVIDER_SPEC_CD", by.y = "MEDICARE SPECIALTY CODE", all.x = TRUE, all.y = FALSE)
+> dim(PAD_DATA)
+[1] 506469     24
+> 
+> PAD_DATA[, HCPCS_INITIAL_MODIFIER_CD := NULL]
+> PAD_DATA[, CARRIER_NUM               := NULL]
+> PAD_DATA[, PRICING_LOCALITY_CD       := NULL]
+> PAD_DATA[, TYPE_OF_SERVICE_CD        := NULL]
+> PAD_DATA[, HCPCS_SECOND_MODIFIER_CD  := NULL]
+> PAD_DATA[, PSPS_SUBMITTED_CHARGE_AMT := NULL]
+> PAD_DATA[, PSPS_ALLOWED_CHARGE_AMT   := NULL]
+> PAD_DATA[, PSPS_DENIED_SERVICES_CNT  := NULL]
+> PAD_DATA[, PSPS_DENIED_CHARGE_AMT    := NULL]
+> PAD_DATA[, PSPS_ASSIGNED_SERVICES_CNT:= NULL]
+> PAD_DATA[, PSPS_NCH_PAYMENT_AMT      := NULL]
+> PAD_DATA[, PSPS_HCPCS_ASC_IND_CD     := NULL]
+> PAD_DATA[, PSPS_ERROR_IND_CD         := NULL]
+> PAD_DATA[, HCPCS_BETOS_CD            := NULL]
+> PAD_DATA[, `Place of Service Name`   := NULL]
+> 
+> # Anatomic Segment
+> PAD_DATA[HCPCS_CD == "37220" , `:=`(ANATOMIC_SEGMENT = "Iliac"             , PROCEDURE = "PTA"                         , PLACEMENT = "initial")]
+> PAD_DATA[HCPCS_CD == "0238T" , `:=`(ANATOMIC_SEGMENT = "Iliac"             , PROCEDURE = "atherectomy"                 , PLACEMENT = "each vessel")]
+> PAD_DATA[HCPCS_CD == "37221" , `:=`(ANATOMIC_SEGMENT = "Iliac"             , PROCEDURE = "stent"                       , PLACEMENT = "initial")]
+> PAD_DATA[HCPCS_CD == "37222" , `:=`(ANATOMIC_SEGMENT = "Iliac"             , PROCEDURE = "PTA"                         , PLACEMENT = "each additional")]
+> PAD_DATA[HCPCS_CD == "37223" , `:=`(ANATOMIC_SEGMENT = "Iliac"             , PROCEDURE = "stent"                       , PLACEMENT = "each additional")]
+> PAD_DATA[HCPCS_CD == "37224" , `:=`(ANATOMIC_SEGMENT = "Femoral/Popliteal" , PROCEDURE = "PTA"                         , PLACEMENT = "")]
+> PAD_DATA[HCPCS_CD == "37225" , `:=`(ANATOMIC_SEGMENT = "Femoral/Popliteal" , PROCEDURE = "atherectomy +/- PTA"         , PLACEMENT = "")]
+> PAD_DATA[HCPCS_CD == "37226" , `:=`(ANATOMIC_SEGMENT = "Femoral/Popliteal" , PROCEDURE = "stent"                       , PLACEMENT = "")]
+> PAD_DATA[HCPCS_CD == "37227" , `:=`(ANATOMIC_SEGMENT = "Femoral/Popliteal" , PROCEDURE = "atherectomy w/stent +/- PTA" , PLACEMENT = "")]
+> PAD_DATA[HCPCS_CD == "37228" , `:=`(ANATOMIC_SEGMENT = "Tibial/Peroneal"   , PROCEDURE = "PTA"                         , PLACEMENT = "initial")]
+> PAD_DATA[HCPCS_CD == "37229" , `:=`(ANATOMIC_SEGMENT = "Tibial/Peroneal"   , PROCEDURE = "atherectomy +/- PTA"         , PLACEMENT = "initial")]
+> PAD_DATA[HCPCS_CD == "37230" , `:=`(ANATOMIC_SEGMENT = "Tibial/Peroneal"   , PROCEDURE = "stent"                       , PLACEMENT = "initial")]
+> PAD_DATA[HCPCS_CD == "37231" , `:=`(ANATOMIC_SEGMENT = "Tibial/Peroneal"   , PROCEDURE = "atherectomy w/stent +/- PTA" , PLACEMENT = "initial")]
+> PAD_DATA[HCPCS_CD == "37232" , `:=`(ANATOMIC_SEGMENT = "Tibial/Peroneal"   , PROCEDURE = "PTA"                         , PLACEMENT = "each additional")]
+> PAD_DATA[HCPCS_CD == "37233" , `:=`(ANATOMIC_SEGMENT = "Tibial/Peroneal"   , PROCEDURE = "atherectomy +/- PTA"         , PLACEMENT = "each additional")]
+> PAD_DATA[HCPCS_CD == "37234" , `:=`(ANATOMIC_SEGMENT = "Tibial/Peroneal"   , PROCEDURE = "stent"                       , PLACEMENT = "each additional")]
+> PAD_DATA[HCPCS_CD == "37235" , `:=`(ANATOMIC_SEGMENT = "Tibial/Peroneal"   , PROCEDURE = "atherectomy w/stent +/- PTA" , PLACEMENT = "each additional")]
+> 
+> save(PAD_DATA, file = '../data/PAD_DATA.rda')
+> 
+> # /* ------------------------------------------------------------------------ */
+> #                                 End of File
+> # /* ------------------------------------------------------------------------ */
+> 
+> 
+> proc.time()
+    user   system  elapsed 
+1165.911   26.883  509.506 

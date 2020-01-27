@@ -1,4 +1,9 @@
-all : overview.md
+.PHONY : data
+
+all : data overview.md
+
+data :
+	$(MAKE) -C data-raw
 
 overview.Rmd : overview.R data/PAD_DATA.rda
 	R --vanilla --quiet -e 'knitr::spin("$<", knit = FALSE)'
