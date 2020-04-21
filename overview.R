@@ -1,16 +1,14 @@
 #' # Trends in Endovascular Peripheral Artery Disease Interventions by Provider Specialty and Clinical Setting in the Medicare Population
 #'
 #' The data summaries provided by this tool are a supplement to the manuscript
-#' "*Trends in Clinical Setting and Provider Specialty for Endovascular Peripheral
-#' Artery Disease Interventions for the Medicare population between 2011 and 2017*"
-#' (in press, 2019) by Kristofer Schramm, Peter E. DeWitt, Stephanie Dybul, Paul
-#' Rochon, P Patel, R Hieb, K Rodgers, R Ryu, M Wolhauer, Premal S Trivedi.  That
-#' data in this application includes 2018 and will be extended as Medicare data
-#' sets are updates and released publically.
+#'
+#' > Schramm, Kristofer M., Peter E. DeWitt, Stephanie Dybul, Paul J. Rochon, Parag Patel, Robert A. Hieb, R. Kevin Rogers et al. "Recent Trends in Clinical Setting and Provider Specialty for Endovascular Peripheral Artery Disease Interventions for the Medicare Population." Journal of Vascular and Interventional Radiology (2020). 
+#'
+#' The data in this application includes 2018 and will be extended as Medicare
+#' data sets are updates and released publically.
 #'
 #' The code and data sets required to build this application can be found on
 #' [Peter DeWitt's github](https://github.com/dewittpe/PAD) page.
-#'
 #'
 #' ## Purpose:
 #' Provide graphical descriptions of the trends in peripheral endovascular
