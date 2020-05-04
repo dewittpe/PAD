@@ -1,7 +1,7 @@
 
-R version 3.6.2 (2019-12-12) -- "Dark and Stormy Night"
-Copyright (C) 2019 The R Foundation for Statistical Computing
-Platform: x86_64-apple-darwin15.6.0 (64-bit)
+R version 4.0.0 (2020-04-24) -- "Arbor Day"
+Copyright (C) 2020 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin17.0 (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -18,26 +18,25 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > if(!require(cms.hcpcs)) {
-+   devtools::install_github("dewittpe/cms.hcpcs")
++   remotes::install_github("dewittpe/cms.hcpcs")
 +   library(cms.hcpcs)
 + }
 Loading required package: cms.hcpcs
 > 
 > if (!require(cms.program.statistics)) {
-+   devtools::install_github("dewittpe/cms.program.statistics")
++   remotes::install_github("dewittpe/cms.program.statistics")
 +   library(cms.program.statistics)
 + }
 Loading required package: cms.program.statistics
 > 
 > if (!require(cms.psps)) {
-+   devtools::install_github("dewittpe/cms.psps")
++   remotes::install_github("dewittpe/cms.psps")
 +   library(cms.psps)
 +   psps_download()
 +   psps_unzip()
 + }
 Loading required package: cms.psps
 > 
-> library(magrittr)
 > library(data.table)
 > HCPCS_2019_Q4 <- as.data.table(HCPCS_2019_Q4)
 > 
@@ -106,28 +105,28 @@ Loading required package: cms.psps
 > 
 > # PSPS data from 2011 and beyond
 > psps_2011 <- psps_import_2011()
-> psps_2011 %<>% .[HCPCS_CD %in% PAD_CODES]
+> psps_2011 <- subset(psps_2011, HCPCS_CD %in% PAD_CODES)
 > 
 > psps_2012 <- psps_import_2012()
-> psps_2012 %<>% .[HCPCS_CD %in% PAD_CODES]
+> psps_2012 <- subset(psps_2012, HCPCS_CD %in% PAD_CODES)
 > 
 > psps_2013 <- psps_import_2013()
-> psps_2013 %<>% .[HCPCS_CD %in% PAD_CODES]
+> psps_2013 <- subset(psps_2013, HCPCS_CD %in% PAD_CODES)
 > 
 > psps_2014 <- psps_import_2014()
-> psps_2014 %<>% .[HCPCS_CD %in% PAD_CODES]
+> psps_2014 <- subset(psps_2014, HCPCS_CD %in% PAD_CODES)
 > 
 > psps_2015 <- psps_import_2015()
-> psps_2015 %<>% .[HCPCS_CD %in% PAD_CODES]
+> psps_2015 <- subset(psps_2015, HCPCS_CD %in% PAD_CODES)
 > 
 > psps_2016 <- psps_import_2016()
-> psps_2016 %<>% .[HCPCS_CD %in% PAD_CODES]
+> psps_2016 <- subset(psps_2016, HCPCS_CD %in% PAD_CODES)
 > 
 > psps_2017 <- psps_import_2017()
-> psps_2017 %<>% .[HCPCS_CD %in% PAD_CODES]
+> psps_2017 <- subset(psps_2017, HCPCS_CD %in% PAD_CODES)
 > 
 > psps_2018 <- psps_import_2018()
-> psps_2018 %<>% .[HCPCS_CD %in% PAD_CODES]
+> psps_2018 <- subset(psps_2018, HCPCS_CD %in% PAD_CODES)
 > 
 > PSPS_DATA <-
 +   rbindlist(list(psps_2011, psps_2012, psps_2013, psps_2014,
@@ -158,29 +157,27 @@ Loading required package: cms.psps
 > PROVIDER_TAXONOMY <- unique(PROVIDER_TAXONOMY[, c("MEDICARE SPECIALTY CODE", "PROVIDER_GRP")])
 > 
 > # PAD Data
-> PAD_DATA <-
-+   PSPS_DATA %>%
-+   merge(., ENROLLMENT, by = "YEAR", all.x = TRUE, all.y = FALSE) %>%
-+   merge(., PLACE_OF_SERVICE, by.x = "PLACE_OF_SERVICE_CD", by.y = "Place of Service Code", all.x = TRUE, all.y = FALSE) %>%
-+   merge(., PROVIDER_TAXONOMY, by.x = "PROVIDER_SPEC_CD", by.y = "MEDICARE SPECIALTY CODE", all.x = TRUE, all.y = FALSE)
+> PAD_DATA <- merge(PSPS_DATA, ENROLLMENT, by = "YEAR", all.x = TRUE, all.y = FALSE)
+> PAD_DATA <- merge(PAD_DATA, PLACE_OF_SERVICE, by.x = "PLACE_OF_SERVICE_CD", by.y = "Place of Service Code", all.x = TRUE, all.y = FALSE)
+> PAD_DATA <- merge(PAD_DATA, PROVIDER_TAXONOMY, by.x = "PROVIDER_SPEC_CD", by.y = "MEDICARE SPECIALTY CODE", all.x = TRUE, all.y = FALSE)
 > dim(PAD_DATA)
 [1] 506469     24
 > 
-> PAD_DATA[, HCPCS_INITIAL_MODIFIER_CD := NULL]
-> PAD_DATA[, CARRIER_NUM               := NULL]
-> PAD_DATA[, PRICING_LOCALITY_CD       := NULL]
-> PAD_DATA[, TYPE_OF_SERVICE_CD        := NULL]
-> PAD_DATA[, HCPCS_SECOND_MODIFIER_CD  := NULL]
-> PAD_DATA[, PSPS_SUBMITTED_CHARGE_AMT := NULL]
-> PAD_DATA[, PSPS_ALLOWED_CHARGE_AMT   := NULL]
-> PAD_DATA[, PSPS_DENIED_SERVICES_CNT  := NULL]
-> PAD_DATA[, PSPS_DENIED_CHARGE_AMT    := NULL]
-> PAD_DATA[, PSPS_ASSIGNED_SERVICES_CNT:= NULL]
-> PAD_DATA[, PSPS_NCH_PAYMENT_AMT      := NULL]
-> PAD_DATA[, PSPS_HCPCS_ASC_IND_CD     := NULL]
-> PAD_DATA[, PSPS_ERROR_IND_CD         := NULL]
-> PAD_DATA[, HCPCS_BETOS_CD            := NULL]
-> PAD_DATA[, `Place of Service Name`   := NULL]
+> set(PAD_DATA, j = "HCPCS_INITIAL_MODIFIER_CD",  value = NULL)
+> set(PAD_DATA, j = "CARRIER_NUM",                value = NULL)
+> set(PAD_DATA, j = "PRICING_LOCALITY_CD",        value = NULL)
+> set(PAD_DATA, j = "TYPE_OF_SERVICE_CD",         value = NULL)
+> set(PAD_DATA, j = "HCPCS_SECOND_MODIFIER_CD",   value = NULL)
+> set(PAD_DATA, j = "PSPS_SUBMITTED_CHARGE_AMT",  value = NULL)
+> set(PAD_DATA, j = "PSPS_ALLOWED_CHARGE_AMT",    value = NULL)
+> set(PAD_DATA, j = "PSPS_DENIED_SERVICES_CNT",   value = NULL)
+> set(PAD_DATA, j = "PSPS_DENIED_CHARGE_AMT",     value = NULL)
+> set(PAD_DATA, j = "PSPS_ASSIGNED_SERVICES_CNT", value = NULL)
+> set(PAD_DATA, j = "PSPS_NCH_PAYMENT_AMT",       value = NULL)
+> set(PAD_DATA, j = "PSPS_HCPCS_ASC_IND_CD",      value = NULL)
+> set(PAD_DATA, j = "PSPS_ERROR_IND_CD",          value = NULL)
+> set(PAD_DATA, j = "HCPCS_BETOS_CD",             value = NULL)
+> set(PAD_DATA, j = "Place of Service Name",      value = NULL)
 > 
 > # Anatomic Segment
 > PAD_DATA[HCPCS_CD == "37220" , `:=`(ANATOMIC_SEGMENT = "Iliac"             , PROCEDURE = "PTA"                         , PLACEMENT = "initial")]
@@ -209,5 +206,5 @@ Loading required package: cms.psps
 > 
 > 
 > proc.time()
-    user   system  elapsed 
-1165.911   26.883  509.506 
+   user  system elapsed 
+534.091  19.525 598.945 
