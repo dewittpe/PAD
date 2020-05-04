@@ -2,7 +2,9 @@
 #'
 #' The data summaries provided by this tool are a supplement to the manuscript
 #'
-#' > Schramm, Kristofer M., Peter E. DeWitt, Stephanie Dybul, Paul J. Rochon, Parag Patel, Robert A. Hieb, R. Kevin Rogers et al. "Recent Trends in Clinical Setting and Provider Specialty for Endovascular Peripheral Artery Disease Interventions for the Medicare Population." Journal of Vascular and Interventional Radiology (2020). 
+#' > Schramm, Kristofer M., Peter E. DeWitt, Stephanie Dybul, Paul J. Rochon, Parag Patel, Robert A. Hieb, R. Kevin Rogers et al. "Recent Trends in Clinical Setting and Provider Specialty for Endovascular Peripheral Artery Disease Interventions for the Medicare Population." Journal of Vascular and Interventional Radiology (2020).
+#'
+#' https://doi.org/10.1016/j.jvir.2019.10.025
 #'
 #' The data in this application includes 2018 and will be extended as Medicare
 #' data sets are updates and released publically.
