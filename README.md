@@ -16,3 +16,20 @@ for the Medicare Population." Journal of Vascular and Interventional Radiology
 (2020).
 
 https://doi.org/10.1016/j.jvir.2019.10.025
+
+## Running the Application
+
+The public version of the application is found at the link above.  To test the
+application locally you can install R, shiny, etc., and run the application via
+
+```r
+shiny::runApp()
+```
+
+Alternatively, use docker and make.  The test recipe will create the docker
+image and run the application in a container.  You can access the application
+in your web browser at localhost:3838
+
+```bash
+make test
+```
